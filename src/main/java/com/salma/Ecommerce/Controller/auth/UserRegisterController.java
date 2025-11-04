@@ -1,5 +1,7 @@
 package com.salma.Ecommerce.Controller.auth;
 
+import com.salma.Ecommerce.DTO.LoginResponseDTO;
+import com.salma.Ecommerce.DTO.UserLoginDTO;
 import com.salma.Ecommerce.DTO.UserRegisterDto;
 import com.salma.Ecommerce.Entity.User;
 import com.salma.Ecommerce.Exceptions.UserAlreadyExistsException;
@@ -24,6 +26,17 @@ public class UserRegisterController {
         } catch (UserAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
         }
+    }
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@Valid @RequestBody UserLoginDTO userLoginDTO){
+        String jwt= userService.loginUser(userLoginDTO);
+        if (jwt ==null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        LoginResponseDTO loginResponseDTO=new LoginResponseDTO();
+        loginResponseDTO.setJwt(jwt);
+        return ResponseEntity.ok(loginResponseDTO);
+
     }
 
 }

@@ -1,11 +1,14 @@
 package com.salma.Ecommerce.Service;
 
+import com.salma.Ecommerce.DTO.UserLoginDTO;
 import com.salma.Ecommerce.DTO.UserRegisterDto;
 import com.salma.Ecommerce.Entity.User;
 import com.salma.Ecommerce.Exceptions.UserAlreadyExistsException;
 import com.salma.Ecommerce.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -14,6 +17,9 @@ public class UserService {
 
     @Autowired
     private EncryptService encryptService;
+
+    @Autowired
+    private JWTService jwtService;
 
 
     public User registerUser(UserRegisterDto userRegisterDto) throws UserAlreadyExistsException {
@@ -29,6 +35,17 @@ public class UserService {
         user.setEmail(userRegisterDto.getEmail());
         user.setPassword(encryptService.encryptPassword(userRegisterDto.getPassword()));
         return userRepository.save(user);
+
+    }
+    public String loginUser(UserLoginDTO userLoginDTO){
+        Optional<User>loginUser=userRepository.findByUsernameIgnoreCase(userLoginDTO.getUserName());
+        if(loginUser.isPresent()){
+            User user=loginUser.get();
+            if(encryptService.checkPassword(userLoginDTO.getPassword(),user.getPassword())){
+                return jwtService.generateJWT(user);
+            }
+
+        }return null;
 
     }
 }
