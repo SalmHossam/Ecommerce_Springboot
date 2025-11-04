@@ -12,6 +12,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private EncryptService encryptService;
+
 
     public User registerUser(UserRegisterDto userRegisterDto) throws UserAlreadyExistsException {
         if (userRepository.findByEmailIgnoreCase(userRegisterDto.getEmail()).isPresent()
@@ -24,7 +27,7 @@ public class UserService {
         user.setUsername(userRegisterDto.getUsername());
         user.setPhoneNumber(userRegisterDto.getPhoneNumber());
         user.setEmail(userRegisterDto.getEmail());
-        user.setPassword(userRegisterDto.getPassword());
+        user.setPassword(encryptService.encryptPassword(userRegisterDto.getPassword()));
         return userRepository.save(user);
 
     }
