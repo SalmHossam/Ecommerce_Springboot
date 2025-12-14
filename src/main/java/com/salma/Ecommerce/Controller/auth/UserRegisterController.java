@@ -10,11 +10,11 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/api/auth")
+@RestController
+@RequestMapping("/api/auth")
 public class UserRegisterController {
     @Autowired
     private UserService userService;
@@ -36,6 +36,12 @@ public class UserRegisterController {
         LoginResponseDTO loginResponseDTO=new LoginResponseDTO();
         loginResponseDTO.setJwt(jwt);
         return ResponseEntity.ok(loginResponseDTO);
+
+    }
+
+    @GetMapping("/user")
+    public User  getUserDetails(@AuthenticationPrincipal User user){
+        return user;
 
     }
 

@@ -32,5 +32,18 @@ public class JWTService {
 
     }
 
+    public  String getUserNameFromJWT(String jwt){
+        return JWT.decode(jwt).getClaim("USERNAME").asString();
+    }
+
+    public boolean isTokenValid(String token){
+        try{
+            JWT.decode(token);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
 
 }

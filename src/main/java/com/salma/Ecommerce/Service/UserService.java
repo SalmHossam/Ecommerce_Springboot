@@ -38,7 +38,7 @@ public class UserService {
 
     }
     public String loginUser(UserLoginDTO userLoginDTO){
-        Optional<User>loginUser=userRepository.findByUsernameIgnoreCase(userLoginDTO.getUserName());
+        Optional<User>loginUser=userRepository.findByUsernameIgnoreCase(userLoginDTO.getUsername());
         if(loginUser.isPresent()){
             User user=loginUser.get();
             if(encryptService.checkPassword(userLoginDTO.getPassword(),user.getPassword())){

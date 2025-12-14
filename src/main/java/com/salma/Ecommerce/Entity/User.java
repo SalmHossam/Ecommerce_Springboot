@@ -1,5 +1,6 @@
 package com.salma.Ecommerce.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,8 +29,11 @@ public class User {
     @Column(name = "email", nullable = false,unique = true)
     private String email;
     @Column(name = "password", nullable = false)
+    @JsonIgnore
     private String password;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Address> addresses = new ArrayList<>();
 
 
