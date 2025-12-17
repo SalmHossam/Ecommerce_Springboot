@@ -1,5 +1,6 @@
 package com.salma.Ecommerce.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,7 @@ public class WebOrderQuantities {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonIgnore
     private WebOrder order;
 
 }

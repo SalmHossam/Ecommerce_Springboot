@@ -22,7 +22,7 @@ public class WebOrder {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
