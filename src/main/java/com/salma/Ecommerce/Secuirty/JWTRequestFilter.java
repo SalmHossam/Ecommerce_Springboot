@@ -26,17 +26,18 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     private JWTService jwtService;
     @Autowired
     private UserRepository userRepository;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String tokenHeader=request.getHeader("Authorization");
-        if(tokenHeader!=null || !tokenHeader.startsWith("Bearer ")){
-            String token=tokenHeader.substring(7);
-            try{
-                String username= jwtService.getUserNameFromJWT(token);
-                Optional<User> localUser=userRepository.findByUsernameIgnoreCase(username);
-                if(localUser.isPresent()){
-                  User user=localUser.get();
-                    UsernamePasswordAuthenticationToken authentication=new UsernamePasswordAuthenticationToken(user,null,new ArrayList());
+        String tokenHeader = request.getHeader("Authorization");
+        if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
+            String token = tokenHeader.substring(7);
+            try {
+                String username = jwtService.getUserNameFromJWT(token);
+                Optional<User> localUser = userRepository.findByUsernameIgnoreCase(username);
+                if (localUser.isPresent()) {
+                    User user = localUser.get();
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, new ArrayList());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
@@ -44,6 +45,6 @@ public class JWTRequestFilter extends OncePerRequestFilter {
             }
 
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 }
