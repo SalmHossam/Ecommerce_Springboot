@@ -36,5 +36,10 @@ public class User {
     @JsonIgnore
     private List<Address> addresses = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @OrderBy("id desc")
+    private List<VerificationToken> verificationTokens=new ArrayList<>();
+
 
 }
