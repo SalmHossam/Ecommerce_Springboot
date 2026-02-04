@@ -20,4 +20,19 @@ public class ProductService {
     public Optional<Product> getProductByName(String name){
         return productRepository.findByName(name);
     }
+    public Optional<Product> getProductById(long id){
+        return productRepository.findById(id);
+    }
+    public Product createProduct(Product product){
+        return productRepository.save(product);
+    }
+    public Product updateProduct(Product product){
+        return productRepository.save(product);
+    }
+    public void deleteProduct(long id){
+        Product product=productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        productRepository.delete(product);
+    }
+
 }

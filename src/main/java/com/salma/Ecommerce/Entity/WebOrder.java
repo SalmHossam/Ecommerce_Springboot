@@ -28,4 +28,7 @@ public class WebOrder {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<WebOrderQuantities> quantities = new ArrayList<>();
+
+    @Column(name = "total_price", nullable = false)
+    private Double totalPrice;
 }
