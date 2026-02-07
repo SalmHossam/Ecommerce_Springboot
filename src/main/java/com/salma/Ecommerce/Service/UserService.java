@@ -6,6 +6,7 @@ import com.salma.Ecommerce.Entity.User;
 import com.salma.Ecommerce.Entity.VerificationToken;
 import com.salma.Ecommerce.Exceptions.UserAlreadyExistsException;
 import com.salma.Ecommerce.Repository.UserRepository;
+import com.salma.Ecommerce.Repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,9 @@ public class UserService {
     @Autowired
     private JWTService jwtService;
 
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
+
 
     public User registerUser(UserRegisterDto userRegisterDto) throws UserAlreadyExistsException {
         if (userRepository.findByEmailIgnoreCase(userRegisterDto.getEmail()).isPresent()
@@ -36,8 +40,12 @@ public class UserService {
         user.setPhoneNumber(userRegisterDto.getPhoneNumber());
         user.setEmail(userRegisterDto.getEmail());
         user.setPassword(encryptService.encryptPassword(userRegisterDto.getPassword()));
+        User savedUser=userRepository.save(user);
+
         VerificationToken verificationToken=createVerificationToken(user);
-        return userRepository.save(user);
+        verificationTokenRepository.save(verificationToken);
+
+        return savedUser;
 
     }
 

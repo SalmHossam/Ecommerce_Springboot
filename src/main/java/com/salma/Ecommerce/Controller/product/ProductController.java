@@ -1,6 +1,7 @@
 package com.salma.Ecommerce.Controller.product;
 
 import com.salma.Ecommerce.Entity.Product;
+import com.salma.Ecommerce.Repository.ProductRepository;
 import com.salma.Ecommerce.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -15,6 +17,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getAllProducts(){
@@ -52,9 +57,18 @@ public class ProductController {
         return ResponseEntity.ok("Product deleted successfully");
     }
 
-    @GetMapping("/products")
+    @GetMapping("/product")
     public ResponseEntity<Optional<Product>> getProductByName(@PathVariable String name){
         return ResponseEntity.ok(productService.getProductByName(name));
     }
+
+    @PostMapping("/products/batch")
+    public ResponseEntity<List<Product>> createProducts(@RequestBody List<Product> products) {
+        List<Product> savedProducts = products.stream()
+                .map(productRepository::save)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(savedProducts);
+    }
+
 
 }

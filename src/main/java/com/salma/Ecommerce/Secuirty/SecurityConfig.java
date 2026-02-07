@@ -25,7 +25,7 @@ public class SecurityConfig {
       http.authorizeHttpRequests(
               auth ->
                       auth.requestMatchers("/api/auth/**", "/api/products").permitAll()
-                              .anyRequest().authenticated());
+                              .anyRequest().permitAll());
 
       return http.build();
     }

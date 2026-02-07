@@ -8,10 +8,12 @@ import lombok.Setter;
 @Table(name = "products")
 @Setter
 @Getter
+
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "product_id", nullable = false)
     private Long id;
 
     @Column(name = "name", nullable = false, unique = true)
@@ -26,7 +28,7 @@ public class Product {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, optional = false, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "inventory_id")
     private Inventory inventory;
-
 }

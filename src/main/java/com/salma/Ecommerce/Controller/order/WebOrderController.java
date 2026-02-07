@@ -20,6 +20,7 @@ public class WebOrderController {
 
     @GetMapping("/orders")
     public ResponseEntity<List<WebOrder>> getAllOrders(){
+
         return ResponseEntity.ok(webOrderService.getAllOrders());
     }
 
@@ -37,4 +38,5 @@ public class WebOrderController {
     public ResponseEntity<WebOrder> createOrder(@RequestBody WebOrderDTO webOrderDTO){
         return ResponseEntity.ok(webOrderService.createOrder(webOrderDTO));
     }
+
 }
